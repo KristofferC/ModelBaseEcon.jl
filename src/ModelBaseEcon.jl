@@ -16,6 +16,7 @@ module ModelBaseEcon
 
 using OrderedCollections
 using MacroTools
+using LinearAlgebra
 using SparseArrays
 using DiffResults
 using ForwardDiff
@@ -68,6 +69,8 @@ macro load_example(name)
 end
 export @using_example, @load_example
 
+######################################################################
 
+include("dfm/dfmmodel.jl")
 
 end # module
