@@ -998,5 +998,41 @@ end
     end
 end
 
+@testset "bug #28" begin
+    let 
+        m = Model()
+        @variables m (@log(a); la)
+        @equations m begin
+            a[t] = exp(la[t])
+            la[t] = 20
+        end
+        @initialize m
+        assign_sstate!(m, a = 20, la = log(20))
+        @test m.sstate.a.level ≈ 20 atol=1e-14
+        @test m.sstate.a.slope == 1.0
+        @test m.sstate.la.level ≈ log(20) atol=1e-14
+        @test m.sstate.la.slope == 0.0
+        assign_sstate!(m, a = (level=20,), la = [log(20), 0])
+        @test m.sstate.a.level ≈ 20 atol=1e-14
+        @test m.sstate.a.slope == 1.0
+        @test m.sstate.la.level ≈ log(20) atol=1e-14
+        @test m.sstate.la.slope == 0.0
+    end
+end
+
+@testset "sel_lin" begin
+    let
+        m = Model()
+        @variables m (la; @log a)
+        @equations m begin
+            @lin a[t] = exp(la[t])
+            @lin la[t] = 2
+        end
+        @initialize m
+        assign_sstate!(m; a = exp(2), la = 2)
+        @test_nowarn (selective_linearize!(m); true)
+    end
+end
+
 include("auxsubs.jl")
 include("sstate.jl")
