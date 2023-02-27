@@ -473,10 +473,10 @@ end
     @test ModelBaseEcon.at_lag(:(x[t]), 0) == :(x[t])
     @test_throws ErrorException ModelBaseEcon.at_d(:(x[t]), 0, -1)
     @test ModelBaseEcon.at_d(:(x[t]), 3, 0) == :(((x[t] - 3 * x[t-1]) + 3 * x[t-2]) - x[t-3])
-    @test ModelBaseEcon.at_movsumew(:(x[t]), 3, 2.0) == :(x[t] + (2.0 * x[t - 1] + 4.0 * x[t - 2]))
-    @test ModelBaseEcon.at_movsumew(:(x[t]), 3, :y) == :(x[t] + (y ^ 1 * x[t - 1] + y ^ 2 * x[t - 2]))
-    @test ModelBaseEcon.at_movavew(:(x[t]), 3, 2.0) == :((x[t] + (2.0 * x[t - 1] + 4.0 * x[t - 2])) / 7.0)
-    @test ModelBaseEcon.at_movavew(:(x[t]), 3, :y) == :(((x[t] + (y ^ 1 * x[t - 1] + y ^ 2 * x[t - 2])) * (1 - y)) / (1 - y ^ 3))
+    @test ModelBaseEcon.at_movsumew(:(x[t]), 3, 2.0) == :(x[t] + (2.0 * x[t-1] + 4.0 * x[t-2]))
+    @test ModelBaseEcon.at_movsumew(:(x[t]), 3, :y) == :(x[t] + (y^1 * x[t-1] + y^2 * x[t-2]))
+    @test ModelBaseEcon.at_movavew(:(x[t]), 3, 2.0) == :((x[t] + (2.0 * x[t-1] + 4.0 * x[t-2])) / 7.0)
+    @test ModelBaseEcon.at_movavew(:(x[t]), 3, :y) == :(((x[t] + (y^1 * x[t-1] + y^2 * x[t-2])) * (1 - y)) / (1 - y^3))
 end
 module MetaTest
 using ModelBaseEcon
